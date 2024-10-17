@@ -22,6 +22,7 @@ HEX1_BASE: .word 0x50  @ Endereço do display HEX1
 HEX0_BASE: .word 0x60  @ Endereço do display HEX0
 
 _start:
+  @abre o arquivo /dev/mem
   MOV r7, #5          @ syscall open
   LDR r0, =MEM_FD     @ caminho do arquivo
   MOV r1, #2          
@@ -33,6 +34,7 @@ _start:
   @ verificar se o arquivo foi aberto corretamente
   CMP r0,#0
   BLT _error @se r4 < 0 é erro
+  
   BL sucess
 
   @bl _exit
@@ -43,7 +45,7 @@ _start:
   ldr r1, = HW_REGS_SPAN @ tamanho da pagina
   mov r2, #3          @ leitura/escrita
   mov r3, #1          @ compartilhado com outros processos
-  ldr r5, =ALT_LWFPGASLVS_OFST @carrega o endereço base da FPGA 
+  ldr r5, =FPGA_BRIDGE @carrega o endereço base da FPGA 
   ldr r5, [r5]        @ carrega o valor real do enderço da FPGA
   svc 0               @ kernel é chamado para executar a syscall
 
@@ -55,12 +57,36 @@ _start:
  
   mov r11, r0         @ endereço virtual retornado
 
-  @escrever nos displays
+  @escrever HELP nos displays
   ldr r1, =HEX5_BASE
   ldr r2, [r1]
-  mov r3, #0x06
-  strb r3, [r11, #HEX5_BASE] @tecnicamente é pra escrever no digito 5   
+  mov r3, #0x09 @ valor do led
+  strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5   
                 @ou coloca r2 aqui no #HEX5_BASE se der erro
+  ldr r1, =HEX4_BASE
+  ldr r2, [r1]
+  mov r3, #0x06 @ valor do led
+  strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5 
+
+  ldr r1, =HEX3_BASE
+  ldr r2, [r1]
+  mov r3, #0x47 @ valor do led
+  strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5   
+
+  ldr r1, =HEX2_BASE
+  ldr r2, [r1]
+  mov r3, #0xc @ valor do led
+  strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5 
+
+  ldr r1, =HEX1_BASE
+  ldr r2, [r1]
+  mov r3, #0x7F @ valor do led
+  strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5 
+
+  ldr r1, =HEX0_BASE
+  ldr r2, [r1]
+  mov r3, #0x7F @ valor do led
+  strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5 
 
   @fechar o arquivo /dev/mem
   mov r7, #6
@@ -79,7 +105,7 @@ _error:
 
 _errorMMAP:
   mov r0, #1
-  ldr r1, =msg_mmap_error2
+  ldr r1, =mmsg_mmap_error2
   mov r2, #15
   mov r7, #4
   svc 0
