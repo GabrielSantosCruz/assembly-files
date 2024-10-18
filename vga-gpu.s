@@ -11,7 +11,6 @@ mmsg_mmap_error2:    .asciz "erro no mmap\n"
   .global _start
 
   @ Definições de endereços para os displays de 7 segmentos
-ALT_LWFPGASLVS_OFST:   .word 0xFF200000  @ Offset do barramento Lightweight HPS-to-FPGA
 HW_REGS_SPAN:          .word 0x100       @ tamanho do mapeamento de memória (256 kb) 
 
 dataA: .word 0x80
@@ -56,7 +55,7 @@ _start:
   mov r5, #0
   strb r5, [r11, #0xc0] @escreve no lugar do endereco de memoria
 
-  @os valores do dataA para executar a instrução WSM (se não me engano)
+  @os valores do dataA para executar a instrução WBM
   ldr r1, =dataA @ só recebe o opcode e o endereco
   @ldr r1, [r1] @ ver se isso aqui funciona tbm
   mov r2, #0b0010 @opcode
@@ -65,7 +64,7 @@ _start:
   add r3, r3, r2 @ soma os valores em r3, para ficar em um só binário
   str r3, [r11, [dataA]] @se não funfar, coloca o endereco direto
   
-  @valores de dataB para o WSM (realmente não lembro se era essa instrução)
+  @valores de dataB para o WBM
   mov r4, #0b111 @RGB
   lsl r4, r4, #6
   add r4, r4, #0b111
