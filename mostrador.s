@@ -42,7 +42,7 @@ _start:
   @ configurar o mmap
   mov r7, #192        @ syscall do mmap2
   mov r0, #0          @ para deixar o kernel decidir o enderço virtual
-  ldr r1, = HW_REGS_SPAN @ tamanho da pagina
+  ldr r1, =HW_REGS_SPAN @ tamanho da pagina
   mov r2, #3          @ leitura/escrita
   mov r3, #1          @ compartilhado com outros processos
   ldr r5, =FPGA_BRIDGE @carrega o endereço base da FPGA 
