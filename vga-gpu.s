@@ -41,7 +41,7 @@ _start:
   mov r2, #3          @ leitura/escrita
   mov r3, #1          @ compartilhado com outros processos
   ldr r5, =FPGA_BRIDGE @carrega o endereço base da FPGA 
-  ldr r5, [r5]        @ carrega o valor real do enderço da FPGA
+  ldr r5, [r5]        @ carrega o valor do FPGA_BRIDGE (é basicamente um ponteiro)
   svc 0               @ kernel é chamado para executar a syscall
 
   @verificar falha no mmap
@@ -58,10 +58,11 @@ _start:
 
   @os valores do dataA para executar a instrução WSM (se não me engano)
   ldr r1, =dataA @ só recebe o opcode e o endereco
+  @ldr r1, [r1] @ ver se isso aqui funciona tbm
   mov r2, #0b0010 @opcode
   mov r3, #0b0 @ endereco
   lsl r3, r3, #4 @ arrasta 4 bits para a esquerda
-  add r3, r3, r2 @ soma os valores em r3, para ficar um só binário
+  add r3, r3, r2 @ soma os valores em r3, para ficar em um só binário
   str r3, [r11, [dataA]] @se não funfar, coloca o endereco direto
   
   @valores de dataB para o WSM (realmente não lembro se era essa instrução)

@@ -25,7 +25,7 @@ _start:
   @abre o arquivo /dev/mem
   MOV r7, #5          @ syscall open
   LDR r0, =MEM_FD     @ caminho do arquivo
-  MOV r1, #2          
+  MOV r1, #2          @ para leitura e escrita 
   MOV r2, #0          @ sem flags
   SWI 0               @ chama o sistema para executar
  
