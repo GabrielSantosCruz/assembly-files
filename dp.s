@@ -58,24 +58,55 @@ _start:
  
   @dataA
   mov r0, #0b0011 @opcode
-  mov r1, #0b0000 @ endereco
+  mov r1, #0b0001 @ endereco
   lsl r1, r1, #4
   add r1, r1, r0
-  str r2, [dataA]
-  str r1, [r11, [dataA]] @ se der erro, coloca r2
+  str r1, [r11, #0x80] @ se der erro, coloca r2
     
   @dataB
   mov r0, #1 @ forma de um triangulo
   lsl r0, r0, #31 @ se der erro, pode ser que isso aqui seja 32 k
-  mov r1, #0b011100111 @tecnicamente é pra isso ser laranaja
-  lsl r1, r1, #21
+  ldr r1, =0b011100111 @tecnicamente é pra isso ser laranaja
+  lsl r1, r1, #22
   add r0, r0, r1
-  mov r2, #0b1111 @tamanho, que e pra ser 160x160
-  lsl r2, r2, #17
+  mov r2, #0b0011 @tamanho, que e pra ser 160x160
+  lsl r2, r2, #18
   add r0, r0, r2
+  ldr r3, =160
+  lsl r3, r3, #9
+  add r0, r0, r3
+  ldr r4, =100
+  add r0, r0, r4
   @ como eu quero que fique com x=0 e y=0, tecnicamente eu não preciso adicionar esses valore
-  str r3, [dataB]
-  str r0, [r11, r3]
+  @ldr r0, =0b11110001110011 110010000 101000000
+  str r0, [r11, #0x70]
+  
+
+  
+  @dataA
+  mov r0, #0b0011 @opcode
+  mov r1, #0b0001 @ endereco
+  lsl r1, r1, #4
+  add r1, r1, r0
+  str r1, [r11, #0x80] @ se der erro, coloca r2
+  
+  @dataB
+  mov r0, #0 @ forma de um triangulo
+  lsl r0, r0, #31 @ se der erro, pode ser que isso aqui seja 32 k
+  ldr r1, =0b111010111 @cor
+  lsl r1, r1, #22
+  add r0, r0, r1
+  mov r2, #0b0011 @tamanho, que e pra ser 160x160
+  lsl r2, r2, #18
+  add r0, r0, r2
+  ldr r3, =100
+  lsl r3, r3, #9
+  add r0, r0, r3
+  ldr r4, =0b101000000
+  add r0, r0, r4
+  @ como eu quero que fique com x=0 e y=0, tecnicamente eu não preciso adicionar esses valore
+  @ldr r0, =0b11110001110011 110010000 101000000
+  str r0, [r11, #0x70]
 
   mov r5, #1
   str r5, [r11, #0xc0]

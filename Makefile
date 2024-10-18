@@ -1,15 +1,10 @@
-mostrador.o: mostrador.s
-	as -o mostrador.o mostrador.s
+FILE = dp
 
-mostrador: mostrador.o
-	ld -o mostrador mostrador.o
+$(FILE).o: $(FILE).s
+	as -o $(FILE).o $(FILE).s
 
-vga.o: vga-gpu.s
-	as -o vga.o vga-gpu.s
+$(FILE): $(FILE).o
+	ld -o $(FILE) $(FILE).o
 
-vga: vga.o
-	ld -o vga vga.o
-
-run: mostrador
-	./mostrador
-	./vga
+run: $(FILE)
+	./$(FILE)
