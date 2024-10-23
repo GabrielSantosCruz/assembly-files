@@ -62,7 +62,7 @@ _start:
   ldr r2, [r1]
   mov r3, #0x09 @ valor do led
   strb r3, [r11, r2] @tecnicamente é pra escrever no digito 5   
-                @ou coloca r2 aqui no #HEX5_BASE se der erro
+  
   ldr r1, =HEX4_BASE
   ldr r2, [r1]
   mov r3, #0x06 @ valor do led
